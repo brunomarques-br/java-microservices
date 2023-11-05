@@ -13,7 +13,7 @@ public class CalculatorController {
                 @PathVariable("numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new UnsupportedOperationException("Please set a numeric value!");
         }
         return convertToDouble(numberOne) + convertToDouble(numberTwo);
     }
