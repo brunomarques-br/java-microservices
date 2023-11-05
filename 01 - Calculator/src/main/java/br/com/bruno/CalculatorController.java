@@ -1,40 +1,77 @@
 package br.com.bruno;
 
+import br.com.bruno.utils.MathValidators;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CalculatorController {
 
-    @GetMapping("/sum/{numberOne}/{numberTwo}")
-    public Double sum(
+    private static final String NUMERO_VALIDO = "Por favor, informe um número válido!";
+
+    @GetMapping("/soma/{numberOne}/{numberTwo}")
+    public Double soma(
                 @PathVariable("numberOne") String numberOne,
                 @PathVariable("numberTwo") String numberTwo
-    ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupportedOperationException("Please set a numeric value!");
+    ){
+        if (!MathValidators.isNumeric(numberOne) || !MathValidators.isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
         }
-        return convertToDouble(numberOne) + convertToDouble(numberTwo);
+        return MathValidators.convertToDouble(numberOne) + MathValidators.convertToDouble(numberTwo);
     }
 
-    private boolean isNumeric(String strNumber) {
-        if (strNumber == null) {
-            return false;
+    @GetMapping("/subtracao/{numberOne}/{numberTwo}")
+    public Double subtracao(
+                @PathVariable("numberOne") String numberOne,
+                @PathVariable("numberTwo") String numberTwo
+    ){
+        if (!MathValidators.isNumeric(numberOne) || !MathValidators.isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
         }
-        // alterando virgula para ponto (internacionalização)
-        String number = strNumber.replaceAll(",", ".");
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
+        return MathValidators.convertToDouble(numberOne) - MathValidators.convertToDouble(numberTwo);
     }
 
-    private Double convertToDouble(String strNumber) {
-        if (strNumber == null) {
-            return 0D;
+    @GetMapping("/multiplicacao/{numberOne}/{numberTwo}")
+    public Double multiplicacao(
+                @PathVariable("numberOne") String numberOne,
+                @PathVariable("numberTwo") String numberTwo
+    ){
+        if (!MathValidators.isNumeric(numberOne) || !MathValidators.isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
         }
-        String number = strNumber.replaceAll(",", ".");
-        if (isNumeric(number)) {
-            return Double.parseDouble(number);
-        }
-        return 0D;
+        return MathValidators.convertToDouble(numberOne) * MathValidators.convertToDouble(numberTwo);
     }
+
+    @GetMapping("/divisao/{numberOne}/{numberTwo}")
+    public Double divisao(
+                @PathVariable("numberOne") String numberOne,
+                @PathVariable("numberTwo") String numberTwo
+    ){
+        if (!MathValidators.isNumeric(numberOne) || !MathValidators.isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
+        }
+        return MathValidators.convertToDouble(numberOne) / MathValidators.convertToDouble(numberTwo);
+    }
+
+    @GetMapping("/media/{numberOne}/{numberTwo}")
+    public Double media(
+                @PathVariable("numberOne") String numberOne,
+                @PathVariable("numberTwo") String numberTwo
+    ){
+        if (!MathValidators.isNumeric(numberOne) || !MathValidators.isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
+        }
+        return (MathValidators.convertToDouble(numberOne) + MathValidators.convertToDouble(numberTwo)) / 2;
+    }
+
+    @GetMapping("/raiz/{numberOne}")
+    public Double raiz(
+                @PathVariable("numberOne") String numberOne
+    ){
+        if (!MathValidators.isNumeric(numberOne)) {
+            throw new UnsupportedOperationException(NUMERO_VALIDO);
+        }
+        return Math.sqrt(MathValidators.convertToDouble(numberOne));
+    }
+
+
 }
