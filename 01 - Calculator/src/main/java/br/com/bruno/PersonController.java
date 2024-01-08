@@ -3,10 +3,7 @@ package br.com.bruno;
 import br.com.bruno.model.Person;
 import br.com.bruno.service.PersonService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,22 @@ public class PersonController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Person findById(@PathVariable("id") String id) {
         return service.findById(id);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Person create(@RequestBody Person person) {
+        return service.create(person);
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Person update(@RequestBody Person person) {
+        return service.update(person);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") String id) {
+        service.delete(id);
     }
 }
